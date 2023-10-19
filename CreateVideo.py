@@ -1,42 +1,37 @@
 import os
 import cv2
 
-
+# Diretório onde estão as imagens
 path = "Images"
 
+# Lista para armazenar os nomes dos arquivos de imagem
 images = []
 
-
+# Loop para encontrar arquivos de imagem no diretório
 for file in os.listdir(path):
     name, ext = os.path.splitext(file)
-
-    if ext in ['.gif', '.png', '.jpg', '.jpeg','.jfif']:
-        file_name = path+"/"+file
-
-        #print(file_name)
-               
+    
+    # Verifica se a extensão do arquivo é uma imagem válida
+    if ext in ['.gif', '.png', '.jpg', '.jpeg', '.jfif']:
+        file_name = os.path.join(path, file)  # Utilize os.path.join para criar o caminho completo
         images.append(file_name)
-        
-#print(len(images))
+
+# Obtém o número de imagens
 count = len(images)
 
+# Lê a primeira imagem para obter o tamanho
 frame = cv2.imread(images[0])
 height, width, channels = frame.shape
-size = (width,height)
-#print(size)
+size = (width, height)
 
+# Cria o objeto de gravação de vídeo
+out = cv2.VideoWriter('project.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 5, size)
 
-out = cv2.VideoWriter('project.mp4',cv2.VideoWriter_fourcc(*'DIVX'), 5, size)
-
-#Para o PÔR DO SOL
-#for i in range(0,count-1):
-
-#Para o NASCER DO SOL
-for i in range(count-1,0,-1):
+# Loop para escrever as imagens no vídeo (inverso para o NASCER DO SOL)
+for i in range(count - 1, 0, -1):
     frame = cv2.imread(images[i])
     out.write(frame)
-    
-out.release() # liberando o vídeo gerado
+
+# Libera o vídeo gerado
+out.release()
 print("Concluído")
-
-
